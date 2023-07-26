@@ -6,6 +6,7 @@ import {
   CalendarOutlined,
   CommentOutlined,
   ProfileOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 
 const NewsDetailPage = ({ news }) => {
@@ -30,9 +31,12 @@ const NewsDetailPage = ({ news }) => {
             />
           </div>
         </Col>
-        <Col className="gutter-row" span={12}>
+        <Col className="gutter-row"  span={12}>
           <div>
-            <h1 style={{fontSize:"35px"}}>{news?.title} </h1>
+            <h1 style={{ fontSize: "35px" }}>{news?.title} </h1>
+            <span className="m-10">
+              <UserOutlined /> {news?.author}
+            </span>
             <div
               className="line"
               style={{
@@ -78,17 +82,18 @@ NewsDetailPage.getLayout = function getLayout(page) {
   return <RootLayout>{page}</RootLayout>;
 };
 
-export const getStaticPaths = async () => {
-  const res = await fetch(`http://localhost:5000/news`);
-  const newss = await res.json();
+// export const getStaticPaths = async () => {
+//   const res = await fetch(`http://localhost:5000/news`);
+//   const newss = await res.json();
 
-  const paths = newss.map((news) => ({
-    params: { newsId: news.id },
-  }));
-  return { paths, fallback: false };
-};
+//   const paths = newss.map((news) => ({
+//     params: { newsId: news.id },
+//   }));
+//   return { paths, fallback: false };
+// };
 
-export const getStaticProps = async (context) => {
+// export const getStaticProps = async (context) => {
+export const getServerSideProps = async (context) => {
   const { params } = context;
   const res = await fetch(`http://localhost:5000/news/${params?.newsId}`);
   const data = await res.json();
